@@ -7,7 +7,7 @@ cqlsh:project> BEGIN BATCH
            ... INSERT INTO projectinfo ( projectid , projectname , studname , rating , duration ) VALUES ( 3, 'ncode','karthi',4,600)
            ... INSERT INTO projectinfo ( projectid , projectname , studname , rating , duration ) VALUES ( 4, 'connectx','kp',3,500)
            ... APPLY BATCH ;
-cqlsh:project> SELECT * FROM projectinfo ;
+cqlsh:project> SELECT * FROM projectinfo;
 
  projectid | projectname | duration | rating | studname
 -----------+-------------+----------+--------+----------
