@@ -1,0 +1,55 @@
+cqlsh> CREATE KEYSPACE project WITH replication = {'class': 'SimpleStrategy', 'replication_factor':1};
+cqlsh> USE project ;
+cqlsh:project> create table projectinfo ( projectid int, projectname text, studname text, rating double, duration int, primary key(projectid, projectname));
+cqlsh:project> BEGIN BATCH 
+           ... INSERT INTO projectinfo ( projectid , projectname , studname , rating , duration ) VALUES ( 1, 'academe','khrithik',4.5,100)
+           ... INSERT INTO projectinfo ( projectid , projectname , studname , rating , duration ) VALUES ( 2, 'shout','arav',5,300)
+           ... INSERT INTO projectinfo ( projectid , projectname , studname , rating , duration ) VALUES ( 3, 'ncode','karthi',4,600)
+           ... INSERT INTO projectinfo ( projectid , projectname , studname , rating , duration ) VALUES ( 4, 'connectx','kp',3,500)
+           ... APPLY BATCH ;
+cqlsh:project> SELECT * FROM projectinfo ;
+
+ projectid | projectname | duration | rating | studname
+-----------+-------------+----------+--------+----------
+         1 |     academe |      100 |    4.5 | khrithik
+         2 |       shout |      300 |      5 |     arav
+         4 |    connectx |      500 |      3 |       kp
+         3 |       ncode |      600 |      4 |   karthi
+
+(4 rows)   
+cqlsh:project> SELECT * FROM projectinfo WHERE projectid = 1;
+
+ projectid | projectname | duration | rating | studname
+-----------+-------------+----------+--------+----------
+         1 |     academe |      100 |    4.5 | khrithik
+
+(1 rows)
+cqlsh:project> CREATE INDEX projindex ON projectinfo (studname) ;
+cqlsh:project> SELECT * FROM projectinfo WHERE studname = 'karthi';
+
+ projectid | projectname | duration | rating | studname
+-----------+-------------+----------+--------+----------
+         3 |       ncode |      600 |      4 |   karthi
+
+(1 rows)
+cqlsh:project> UPDATE projectinfo SET studname = 'aravindh' WHERE projectid = 2 AND projectname = 'shout';
+cqlsh:project> SELECT * FROM projectinfo ;
+
+ projectid | projectname | duration | rating | studname
+-----------+-------------+----------+--------+----------
+         1 |     academe |      100 |    4.5 | khrithik
+         2 |       shout |      300 |      5 | aravindh
+         4 |    connectx |      500 |      3 |       kp
+         3 |       ncode |      600 |      4 |   karthi
+
+(4 rows)
+cqlsh:project> DELETE from projectinfo WHERE projectid = 4;
+cqlsh:project> SELECT * FROM projectinfo ;
+
+ projectid | projectname | duration | rating | studname
+-----------+-------------+----------+--------+----------
+         1 |     academe |      100 |    4.5 | khrithik
+         2 |       shout |      300 |      5 | aravindh
+         3 |       ncode |      600 |      4 |   karthi
+
+(3 rows)
